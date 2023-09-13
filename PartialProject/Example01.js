@@ -216,10 +216,33 @@ function keyPressed(event){
    }
 }
 
+var selection = 0;
 function rightclick(ev, gl){
+  const surfaceSelector = document.getElementById('surface-selector');
+
+  const button = document.createElement('button');
+  button.style.width = 20;
+  button.style.height = 20;
+  button.style.margin = 10;
+  button.style.backgroundColor = 'red';
+  button.style.color = 'white';
+  button.innerHTML = 'Surf: ' + index;
+
+  button.onclick = function() {
+    selection = index;
+  };
+
+  surfaceSelector.appendChild(button);
+
   surfaces.push(new Surface(g_points[index]));
+  selection = index; // select last created surface
+  
+  const pSelection = document.getElementById('current-selection');
+  pSelection.textContent = 'Current Selection: ' + selection;
+
   index++;
   draw(gl);
+
 }
 
 function initVertexBuffers(gl, surface, colors){
@@ -241,7 +264,7 @@ function initVertexBuffers(gl, surface, colors){
   modelMatrix.setRotate(angle, rotAxis[0], rotAxis[1], rotAxis[2]);
 
   var translationMatrix = new Matrix4();
-  translationMatrix.setTranslate(xTranslation, yTranslation, zTranslation);
+  translationMatrix.setTranslate(surface.xTranslation, surface.yTranslation, surface.zTranslation);
   modelMatrix.multiply(translationMatrix);
 
   var u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
@@ -286,10 +309,6 @@ var g_points = [];
 var g_colors = [];
 var angle = 0.0;
 var rotAxis = [1,0,0];
-
-var xTranslation = 0;
-var yTranslation = 0;
-var zTranslation = 0;
 
 var surfaces = [];
 
@@ -338,20 +357,14 @@ function Surface(vertices) {
 function draw(gl){
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  if (surfaces.length == 0) {
-    for(var i = 0; i < g_points.length; i++){
-      const surface = new Surface(g_points[i]);
-      var n = initVertexBuffers(gl, surface, new Float32Array(g_colors[i])) / 3;
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);
-    }
-  }else{
-    for(var i = 0; i < surfaces.length; i++){
+  for(var i = 0; i < surfaces.length; i++){
       var n = initVertexBuffers(gl, surfaces[i], new Float32Array(g_colors[i])) / 3;
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);
     }
-  }
 
-  
+  const surface = new Surface(g_points[index]);
+  var n = initVertexBuffers(gl, surface, new Float32Array(g_colors[i])) / 3;
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);
 
   
 }

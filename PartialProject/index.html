@@ -17,6 +17,7 @@
         <canvas id="webgl" width="400" height="400">
           Please use a browser that supports canvas
         </canvas>
+        <p id="current-selection">Current Selection</p>
       </td>
       <td style="width: 60%;">
         <table>
@@ -72,9 +73,19 @@
             <input style="width: 80%;" id="slider-tz"/>
           </li>
 
+          <li>
+            <label>Surface-Selector</label>
+            <div id="surface-selector">
+
+            </div>
+          </li>
+
         </ul>
       </td>
     </tr>
+
+
+
     <tr>
       <td colspan="2" style="width: 100%;">
         <div class="box">
@@ -90,6 +101,13 @@
       margin: 0 0 -2em;
       padding: 0;
       text-align: center;
+    }
+
+    #surface-selector {
+      display: flex;
+      background-color: rgb(179, 154, 102);
+      width: 600px;
+      height: 30px;
     }
 
     #fieldlist > li {
