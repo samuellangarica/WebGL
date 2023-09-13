@@ -36,6 +36,25 @@ function changeAxis() {
     rotAxis = [0,0,1];
   }
 }
+function changeTAxis() {
+  var xAxis = document.getElementById("x-axis-t");
+  var yAxis = document.getElementById("y-axis-t");
+  var zAxis = document.getElementById("z-axis-t");
+
+  if(xAxis.checked){
+    kendoConsole.log("X Translation Axis selected");
+    translationAxis = [1,0,0];
+  }
+  if(yAxis.checked){
+    kendoConsole.log("Y Translation Axis selected");
+    translationAxis = [0,1,0];
+  }
+  if(zAxis.checked){
+    kendoConsole.log("Z Translation Axis selected");
+    translationAxis = [0,0,1];
+  }
+  main();
+}
 
 function restart(){
   index = 0;
@@ -54,6 +73,23 @@ function sliderOnChange(e){
   angle =  e.value;
   main();
 }
+
+
+function translationSliderOnChange(e){
+  kendoConsole.log("Slide :: new slide value is: " + e.value);
+  xTranslation = e.value * translationAxis[0];
+  yTranslation = e.value * translationAxis[1];
+  zTranslation = e.value * translationAxis[2];
+  main();
+}
+function translationSliderOnSlide(e){
+  kendoConsole.log("Change :: new value is: "+ e.value);
+  xTranslation = e.value * translationAxis[0];
+  yTranslation = e.value * translationAxis[1];
+  zTranslation = e.value * translationAxis[2];
+  main();
+}
+
 
 function rangeSlideronSlide(e){
   kendoConsole.log("Slide :: new slide values are: " + e.value.toString().replace(",", " - "));
@@ -78,6 +114,7 @@ function rangeSliderOnChange(e){
 var min = -360;
 var max = 360;
 $(document).ready(function(){
+
   $('#slider').kendoSlider({
     change: sliderOnChange,
     slide: sliderOnSlide,
@@ -87,6 +124,7 @@ $(document).ready(function(){
     largeStep: 60,
     value: 0
   });
+
   $('#rangeslider').kendoRangeSlider({
     change: rangeSliderOnChange,
     slide: rangeSlideronSlide,
@@ -96,6 +134,18 @@ $(document).ready(function(){
     largeStep: 60,
     tickPlacement: "both"
   });
+
+  $('#slider-t').kendoSlider({
+    change: translationSliderOnChange,
+    slide: translationSliderOnSlide,
+    min: -1,
+    max: 1,
+    smallStep: 0.1,
+    largeStep: 0.2,
+    value: 0
+  });
+
+
 }) ;
 function main(){
   var canvas = document.getElementById('webgl');
@@ -157,6 +207,10 @@ function initVertexBuffers(gl, vertices, colors){
   var modelMatrix = new Matrix4();
   modelMatrix.setRotate(angle, rotAxis[0], rotAxis[1], rotAxis[2]);
 
+  var translationMatrix = new Matrix4();
+  translationMatrix.setTranslate(xTranslation * translationAxis[0], yTranslation * translationAxis[1], zTranslation * translationAxis[2]);
+  modelMatrix.multiply(translationMatrix);
+
   var u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
   if(!u_ModelMatrix){ console.log('Failed to get location of u_ModelMatrix'); }
   gl.uniformMatrix4fv(u_ModelMatrix, false, modelMatrix.elements);
@@ -199,6 +253,12 @@ var g_points = [];
 var g_colors = [];
 var angle = 0.0;
 var rotAxis = [1,0,0];
+var translationAxis = [1,0,0];
+
+var xTranslation = 0;
+var yTranslation = 0;
+var zTranslation = 0;
+
 function click(ev, gl, canvas){
   var x = ev.clientX;
   var y = ev.clientY;

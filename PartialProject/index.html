@@ -21,8 +21,9 @@
       <td style="width: 60%;">
         <table>
           <tr>
+
             <td>
-              <ul id="fieldlist2">
+              <ul id="fieldlist2"> <p>Rotation Axis</p>
                 <li>
                   <input type="radio" name="axis" id="x-axis" class="k-radio" checked="checked" onclick="changeAxis()">
                   <label class="k-radio-label" for="x-axis">X-axis</label>
@@ -37,6 +38,24 @@
                 </li>
               </ul>
             </td>
+
+            <td>
+              <ul id="fieldlist2"> <p>Translation Axis</p>
+                <li>
+                  <input type="radio" name="axis" id="x-axis-t" class="k-radio" checked="checked" onclick="changeTAxis()">
+                  <label class="k-radio-label" for="x-axis">X-axis</label>
+                </li>
+                <li>
+                  <input type="radio" name="axis" id="y-axis-t" class="k-radio" onclick="changeTAxis()">
+                  <label class="k-radio-label" for="y-axis">Y-axis</label>
+                </li>
+                <li>
+                  <input type="radio" name="axis" id="z-axis-t" class="k-radio" onclick="changeTAxis()">
+                  <label class="k-radio-label" for="z-axis">Z-axis</label>
+                </li>
+              </ul>
+            </td>
+
             <td>
               <button id="restart" class="k-primary" onclick="restart()">Restart</button>
             </td>
@@ -54,6 +73,12 @@
               <input />
             </div>
           </li>
+
+          <li>
+            <label>Translation</label>
+            <input style="width: 80%;" id="slider-t"/>
+          </li>
+
         </ul>
       </td>
     </tr>
