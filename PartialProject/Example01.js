@@ -217,11 +217,13 @@ function keyPressed(event){
 }
 
 function rightclick(ev, gl){
+  surfaces.push(new Surface(g_points[index]));
   index++;
   draw(gl);
 }
 
-function initVertexBuffers(gl, vertices, colors){
+function initVertexBuffers(gl, surface, colors){
+  vertices = surface.vertices; 
   var n = vertices.length;
   var vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -289,6 +291,8 @@ var xTranslation = 0;
 var yTranslation = 0;
 var zTranslation = 0;
 
+var surfaces = [];
+
 function click(ev, gl, canvas){
   var x = ev.clientX;
   var y = ev.clientY;
@@ -321,10 +325,33 @@ function click(ev, gl, canvas){
   draw(gl);
 }
 
+function Surface(vertices) {
+  this.vertices = new Float32Array(vertices);
+  this.xRotation = 0;
+  this.yRotation = 0;
+  this.zRotation = 0;
+  this.xTranslation = 0;
+  this.yTranslation = 0;
+  this.zTranslation = 0;
+  }
+
 function draw(gl){
   gl.clear(gl.COLOR_BUFFER_BIT);
-  for(var i = 0; i < g_points.length; i++){
-    var n = initVertexBuffers(gl, new Float32Array(g_points[i]), new Float32Array(g_colors[i])) / 3;
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);
+
+  if (surfaces.length == 0) {
+    for(var i = 0; i < g_points.length; i++){
+      const surface = new Surface(g_points[i]);
+      var n = initVertexBuffers(gl, surface, new Float32Array(g_colors[i])) / 3;
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);
+    }
+  }else{
+    for(var i = 0; i < surfaces.length; i++){
+      var n = initVertexBuffers(gl, surfaces[i], new Float32Array(g_colors[i])) / 3;
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);
+    }
   }
+
+  
+
+  
 }
