@@ -75,22 +75,6 @@ function sliderOnChange(e){
 }
 
 
-function translationSliderOnChange(e){
-  kendoConsole.log("Slide :: new slide value is: " + e.value);
-  xTranslation = e.value * translationAxis[0];
-  yTranslation = e.value * translationAxis[1];
-  zTranslation = e.value * translationAxis[2];
-  main();
-}
-function translationSliderOnSlide(e){
-  kendoConsole.log("Change :: new value is: "+ e.value);
-  xTranslation = e.value * translationAxis[0];
-  yTranslation = e.value * translationAxis[1];
-  zTranslation = e.value * translationAxis[2];
-  main();
-}
-
-
 function rangeSlideronSlide(e){
   kendoConsole.log("Slide :: new slide values are: " + e.value.toString().replace(",", " - "));
 }
@@ -108,6 +92,33 @@ function rangeSliderOnChange(e){
   }
   slider.resize();
   angle = slider.value();
+  main();
+}
+
+function txSliderOnChange(e){
+  xTranslation = e.value;
+  main();
+}
+function txSliderOnSlide(e){
+  xTranslation = e.value;
+  main();
+}
+
+function tySliderOnChange(e){
+  yTranslation = e.value;
+  main();
+}
+function tySliderOnSlide(e){
+  yTranslation = e.value;
+  main();
+}
+
+function tzSliderOnChange(e){
+  zTranslation = e.value;
+  main();
+}
+function tzSliderOnSlide(e){
+  zTranslation = e.value;
   main();
 }
 
@@ -135,9 +146,29 @@ $(document).ready(function(){
     tickPlacement: "both"
   });
 
-  $('#slider-t').kendoSlider({
-    change: translationSliderOnChange,
-    slide: translationSliderOnSlide,
+  $('#slider-tx').kendoSlider({
+    change: txSliderOnChange,
+    slide: txSliderOnSlide,
+    min: -1,
+    max: 1,
+    smallStep: 0.1,
+    largeStep: 0.2,
+    value: 0
+  });
+
+  $('#slider-ty').kendoSlider({
+    change: tySliderOnChange,
+    slide: tySliderOnSlide,
+    min: -1,
+    max: 1,
+    smallStep: 0.1,
+    largeStep: 0.2,
+    value: 0
+  });
+
+  $('#slider-tz').kendoSlider({
+    change: tzSliderOnChange,
+    slide: tzSliderOnSlide,
     min: -1,
     max: 1,
     smallStep: 0.1,
@@ -208,7 +239,7 @@ function initVertexBuffers(gl, vertices, colors){
   modelMatrix.setRotate(angle, rotAxis[0], rotAxis[1], rotAxis[2]);
 
   var translationMatrix = new Matrix4();
-  translationMatrix.setTranslate(xTranslation * translationAxis[0], yTranslation * translationAxis[1], zTranslation * translationAxis[2]);
+  translationMatrix.setTranslate(xTranslation, yTranslation, zTranslation);
   modelMatrix.multiply(translationMatrix);
 
   var u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
@@ -253,7 +284,6 @@ var g_points = [];
 var g_colors = [];
 var angle = 0.0;
 var rotAxis = [1,0,0];
-var translationAxis = [1,0,0];
 
 var xTranslation = 0;
 var yTranslation = 0;

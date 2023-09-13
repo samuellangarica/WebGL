@@ -40,23 +40,6 @@
             </td>
 
             <td>
-              <ul id="fieldlist2"> <p>Translation Axis</p>
-                <li>
-                  <input type="radio" name="axis" id="x-axis-t" class="k-radio" checked="checked" onclick="changeTAxis()">
-                  <label class="k-radio-label" for="x-axis">X-axis</label>
-                </li>
-                <li>
-                  <input type="radio" name="axis" id="y-axis-t" class="k-radio" onclick="changeTAxis()">
-                  <label class="k-radio-label" for="y-axis">Y-axis</label>
-                </li>
-                <li>
-                  <input type="radio" name="axis" id="z-axis-t" class="k-radio" onclick="changeTAxis()">
-                  <label class="k-radio-label" for="z-axis">Z-axis</label>
-                </li>
-              </ul>
-            </td>
-
-            <td>
               <button id="restart" class="k-primary" onclick="restart()">Restart</button>
             </td>
           </tr>
@@ -75,8 +58,18 @@
           </li>
 
           <li>
-            <label>Translation</label>
-            <input style="width: 80%;" id="slider-t"/>
+            <label>X-Translation</label>
+            <input style="width: 80%;" id="slider-tx"/>
+          </li>
+
+          <li>
+            <label>Y-Translation</label>
+            <input style="width: 80%;" id="slider-ty"/>
+          </li>
+
+          <li>
+            <label>Z-Translation</label>
+            <input style="width: 80%;" id="slider-tz"/>
           </li>
 
         </ul>
