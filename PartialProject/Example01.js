@@ -96,29 +96,29 @@ function rangeSliderOnChange(e){
 }
 
 function txSliderOnChange(e){
-  xTranslation = e.value;
+  surfaces[selection].xTranslation = e.value;
   main();
 }
 function txSliderOnSlide(e){
-  xTranslation = e.value;
+  surfaces[selection].xTranslation = e.value;
   main();
 }
 
 function tySliderOnChange(e){
-  yTranslation = e.value;
+  surfaces[selection].yTranslation = e.value;
   main();
 }
 function tySliderOnSlide(e){
-  yTranslation = e.value;
+  surfaces[selection].yTranslation = e.value;
   main();
 }
 
 function tzSliderOnChange(e){
-  zTranslation = e.value;
+  surfaces[selection].zTranslation = e.value;
   main();
 }
 function tzSliderOnSlide(e){
-  zTranslation = e.value;
+  surfaces[selection].zTranslation = e.value;
   main();
 }
 
@@ -217,26 +217,28 @@ function keyPressed(event){
 }
 
 var selection = 0;
-function rightclick(ev, gl){
+function create_surface_selection_button(idx){
   const surfaceSelector = document.getElementById('surface-selector');
-
   const button = document.createElement('button');
   button.style.width = 20;
   button.style.height = 20;
   button.style.margin = 10;
   button.style.backgroundColor = 'red';
   button.style.color = 'white';
-  button.innerHTML = 'Surf: ' + index;
-
+  button.innerHTML = 'Surf: ' + idx;
   button.onclick = function() {
-    selection = index;
+    selection = idx;
+    const pSelection = document.getElementById('current-selection');
+    pSelection.textContent = 'Current Selection: ' + selection;
   };
-
   surfaceSelector.appendChild(button);
+}
 
-  surfaces.push(new Surface(g_points[index]));
+function rightclick(ev, gl){ // create surface
+  create_surface_selection_button(index);
+  surfaces.push(new Surface(g_points[index], g_colors[index]));
+
   selection = index; // select last created surface
-  
   const pSelection = document.getElementById('current-selection');
   pSelection.textContent = 'Current Selection: ' + selection;
 
@@ -245,8 +247,9 @@ function rightclick(ev, gl){
 
 }
 
-function initVertexBuffers(gl, surface, colors){
-  vertices = surface.vertices; 
+function initVertexBuffers(gl, surface){
+  var colors = surface.colors;
+  var vertices = surface.vertices; 
   var n = vertices.length;
   var vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -344,8 +347,9 @@ function click(ev, gl, canvas){
   draw(gl);
 }
 
-function Surface(vertices) {
+function Surface(vertices, colors) {
   this.vertices = new Float32Array(vertices);
+  this.colors = new Float32Array(colors);
   this.xRotation = 0;
   this.yRotation = 0;
   this.zRotation = 0;
@@ -358,7 +362,7 @@ function draw(gl){
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   for(var i = 0; i < surfaces.length; i++){
-      var n = initVertexBuffers(gl, surfaces[i], new Float32Array(g_colors[i])) / 3;
+      var n = initVertexBuffers(gl, surfaces[i]) / 3;
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);
     }
 
