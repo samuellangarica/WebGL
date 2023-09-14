@@ -14,7 +14,7 @@
   <table>
     <tr>
       <td>
-        <canvas id="webgl" width="400" height="400">
+        <canvas id="webgl" width="600" height="600">
           Please use a browser that supports canvas
         </canvas>
         <div id="color-picker">
@@ -68,17 +68,32 @@
 
           <li>
             <label>X-Translation</label>
-            <input style="width: 80%;" id="slider-tx"/>
+            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-tx"/>
           </li>
 
           <li>
             <label>Y-Translation</label>
-            <input style="width: 80%;" id="slider-ty"/>
+            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-ty"/>
           </li>
 
           <li>
             <label>Z-Translation</label>
-            <input style="width: 80%;" id="slider-tz"/>
+            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-tz"/>
+          </li>
+
+          <li>
+            <label>X-Scale</label>
+            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-sx"/>
+          </li>
+
+          <li>
+            <label>Y-Scale</label>
+            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-sy"/>
+          </li>
+
+          <li>
+            <label>Z-Scale</label>
+            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-sz"/>
           </li>
 
           <li>
@@ -114,7 +129,7 @@
     #surface-selector {
       display: flex;
       background-color: rgb(179, 154, 102);
-      width: 600px;
+      width: auto;
       height: 30px;
     }
 
@@ -147,7 +162,7 @@
     }
     #apply-color{
       background-color: rgb(207, 140, 93);
-      width: 80px;
+      width: auto;
       height: 25px;
     }
   </style>

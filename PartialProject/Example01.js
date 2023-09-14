@@ -36,25 +36,6 @@ function changeAxis() {
     rotAxis = [0,0,1];
   }
 }
-function changeTAxis() {
-  var xAxis = document.getElementById("x-axis-t");
-  var yAxis = document.getElementById("y-axis-t");
-  var zAxis = document.getElementById("z-axis-t");
-
-  if(xAxis.checked){
-    kendoConsole.log("X Translation Axis selected");
-    translationAxis = [1,0,0];
-  }
-  if(yAxis.checked){
-    kendoConsole.log("Y Translation Axis selected");
-    translationAxis = [0,1,0];
-  }
-  if(zAxis.checked){
-    kendoConsole.log("Z Translation Axis selected");
-    translationAxis = [0,0,1];
-  }
-  main();
-}
 
 function restart(){
   index = 0;
@@ -73,8 +54,6 @@ function sliderOnChange(e){
   angle =  e.value;
   main();
 }
-
-
 function rangeSlideronSlide(e){
   kendoConsole.log("Slide :: new slide values are: " + e.value.toString().replace(",", " - "));
 }
@@ -119,6 +98,33 @@ function tzSliderOnChange(e){
 }
 function tzSliderOnSlide(e){
   surfaces[selection].zTranslation = e.value;
+  main();
+}
+//
+function sxSliderOnChange(e){
+  surfaces[selection].xScale = e.value;
+  main();
+}
+function sxSliderOnSlide(e){
+  surfaces[selection].xScale = e.value;
+  main();
+}
+
+function sySliderOnChange(e){
+  surfaces[selection].yScale = e.value;
+  main();
+}
+function sySliderOnSlide(e){
+  surfaces[selection].yScale = e.value;
+  main();
+}
+
+function szSliderOnChange(e){
+  surfaces[selection].zScale = e.value;
+  main();
+}
+function szSliderOnSlide(e){
+  surfaces[selection].zScale = e.value;
   main();
 }
 
@@ -173,7 +179,34 @@ $(document).ready(function(){
     max: 1,
     smallStep: 0.1,
     largeStep: 0.2,
-    value: 0
+    value: 1
+  });
+  $('#slider-sx').kendoSlider({
+    change: sxSliderOnChange,
+    slide: sxSliderOnSlide,
+    min: 0,
+    max: 5,
+    smallStep: 0.1,
+    largeStep: 0.2,
+    value: 1
+  });
+  $('#slider-sy').kendoSlider({
+    change: sySliderOnChange,
+    slide: sySliderOnSlide,
+    min: 0,
+    max: 5,
+    smallStep: 0.1,
+    largeStep: 0.2,
+    value: 1
+  });
+  $('#slider-sz').kendoSlider({
+    change: szSliderOnChange,
+    slide: szSliderOnSlide,
+    min: 0,
+    max: 5,
+    smallStep: 0.1,
+    largeStep: 0.2,
+    value: 1
   });
 
 
@@ -216,6 +249,27 @@ function keyPressed(event){
    }
 }
 
+function updateSilders(){
+  const sliderTx = document.getElementById('slider-tx');
+  sliderTx.value = surfaces[selection].xTranslation;
+
+  const sliderTy = document.getElementById('slider-ty');
+  sliderTy.value = surfaces[selection].yTranslation;
+
+  const sliderTz = document.getElementById('slider-tz');
+  sliderTz.value = surfaces[selection].zTranslation;
+
+
+  const sliderSx = document.getElementById('slider-sx');
+  sliderSx.value = surfaces[selection].xScale;
+
+  const sliderSy = document.getElementById('slider-sy');
+  sliderSy.value = surfaces[selection].yScale;
+
+  const sliderSz = document.getElementById('slider-sz');
+  sliderSz.value = surfaces[selection].zScale;
+}
+
 var selection = 0;
 function create_surface_selection_button(idx){
   const surfaceSelector = document.getElementById('surface-selector');
@@ -230,6 +284,7 @@ function create_surface_selection_button(idx){
     selection = idx;
     const pSelection = document.getElementById('current-selection');
     pSelection.textContent = 'Current Selection: ' + selection;
+    updateSilders();
   };
   surfaceSelector.appendChild(button);
 }
@@ -241,6 +296,8 @@ function rightclick(ev, gl){ // create surface
   selection = index; // select last created surface
   const pSelection = document.getElementById('current-selection');
   pSelection.textContent = 'Current Selection: ' + selection;
+
+  updateSilders();
 
   index++;
   draw(gl);
@@ -269,6 +326,10 @@ function initVertexBuffers(gl, surface){
   var translationMatrix = new Matrix4();
   translationMatrix.setTranslate(surface.xTranslation, surface.yTranslation, surface.zTranslation);
   modelMatrix.multiply(translationMatrix);
+
+  var scaleMatrix = new Matrix4();
+  scaleMatrix.setScale(surface.xScale, surface.yScale, surface.zScale);
+  modelMatrix.multiply(scaleMatrix);
 
   var u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
   if(!u_ModelMatrix){ console.log('Failed to get location of u_ModelMatrix'); }
@@ -381,6 +442,9 @@ function Surface(vertices, colors) {
   this.xTranslation = 0;
   this.yTranslation = 0;
   this.zTranslation = 0;
+  this.xScale = 1;
+  this.yScale = 1;
+  this.zScale = 1;
   }
 
 function draw(gl){
