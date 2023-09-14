@@ -17,7 +17,15 @@
         <canvas id="webgl" width="400" height="400">
           Please use a browser that supports canvas
         </canvas>
-        <p id="current-selection">Current Selection</p>
+        <div id="color-picker">
+          <p id="current-selection">Current Selection</p>
+          <input type="color" id="colorpicker">
+          <button id="apply-color">
+            <p>Apply color to selection</p>
+          </button>
+        </div>
+        
+        
       </td>
       <td style="width: 60%;">
         <table>
@@ -132,6 +140,15 @@
     #fieldlist2 li {
       list-style: none;
       padding-bottom: 1em;
+    }
+    #color-picker{
+      background-color: rgb(218, 211, 206);
+      text-align: center;
+    }
+    #apply-color{
+      background-color: rgb(207, 140, 93);
+      width: 80px;
+      height: 25px;
     }
   </style>
 

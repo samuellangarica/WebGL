@@ -314,6 +314,31 @@ var angle = 0.0;
 var rotAxis = [1,0,0];
 
 var surfaces = [];
+var colorR = 1
+var colorG = 1
+var colorB = 1
+
+var colorpicker = document.getElementById("colorpicker");
+
+colorpicker.addEventListener("change", function() {
+  var colorHex = colorpicker.value;
+  colorR = parseInt(colorHex.substring(1, 3), 16) / 255;
+  colorG = parseInt(colorHex.substring(3, 5), 16) / 255;
+  colorB = parseInt(colorHex.substring(5, 7), 16) / 255;
+});
+var applyColorBtn = document.getElementById("apply-color");
+applyColorBtn.onclick = function() {
+  var nVertex = surfaces[selection].colors.length / 3
+  var newColors = [];
+  for(var i = 0; i < nVertex; i++){
+    newColors.push(colorR);
+    newColors.push(colorG);
+    newColors.push(colorB);
+  }
+  surfaces[selection].colors = new Float32Array(newColors);
+  main();
+};
+
 
 function click(ev, gl, canvas){
   var x = ev.clientX;
@@ -340,9 +365,9 @@ function click(ev, gl, canvas){
   }
   g_points[index].push(z);
 
-  g_colors[index].push(Math.random());
-  g_colors[index].push(Math.random());
-  g_colors[index].push(Math.random());
+  g_colors[index].push(colorR);
+  g_colors[index].push(colorG);
+  g_colors[index].push(colorB);
 
   draw(gl);
 }
