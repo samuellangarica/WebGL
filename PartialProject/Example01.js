@@ -44,36 +44,33 @@ function restart(){
   kendoConsole.log("Restart.");
   main();
 }
-function sliderOnSlide(e){
-  kendoConsole.log("Slide :: new slide value is: " + e.value);
-  angle = e.value;
+
+function rxSliderOnChange(e){
+  surfaces[selection].xRotation = e.value;
   main();
 }
-function sliderOnChange(e){
-  kendoConsole.log("Change :: new value is: "+ e.value);
-  angle =  e.value;
-  main();
-}
-function rangeSlideronSlide(e){
-  kendoConsole.log("Slide :: new slide values are: " + e.value.toString().replace(",", " - "));
-}
-
-function rangeSliderOnChange(e){
-  kendoConsole.log("Change :: new values are: " + e.value.toString().replace(",", " - "));
-  var slider = $('#slider').data("kendoSlider");
-  slider.min(e.value[0]);
-  slider.max(e.value[1]);
-
-  if(slider.value() < e.value[0]){
-    slider.value(e.value[0]);
-  }else if(slider.value() > e.value[1]){
-    slider.value(e.value[1]);
-  }
-  slider.resize();
-  angle = slider.value();
+function rxSliderOnSlide(e){
+  surfaces[selection].xRotation = e.value;
   main();
 }
 
+function rySliderOnChange(e){
+  surfaces[selection].yRotation = e.value;
+  main();
+}
+function rySliderOnSlide(e){
+  surfaces[selection].yRotation = e.value;
+  main();
+}
+
+function rzSliderOnChange(e){
+  surfaces[selection].zRotation = e.value;
+  main();
+}
+function rzSliderOnSlide(e){
+  surfaces[selection].zRotation = e.value;
+  main();
+}
 function txSliderOnChange(e){
   surfaces[selection].xTranslation = e.value;
   main();
@@ -132,24 +129,34 @@ var min = -360;
 var max = 360;
 $(document).ready(function(){
 
-  $('#slider').kendoSlider({
-    change: sliderOnChange,
-    slide: sliderOnSlide,
-    min: min,
-    max: max,
-    smallStep: 10,
-    largeStep: 60,
+  $('#slider-rx').kendoSlider({
+    change: rxSliderOnChange,
+    slide: rxSliderOnSlide,
+    min: -360,
+    max: 360,
+    smallStep: 45,
+    largeStep: 90,
     value: 0
   });
 
-  $('#rangeslider').kendoRangeSlider({
-    change: rangeSliderOnChange,
-    slide: rangeSlideronSlide,
-    min: min,
-    max: max,
-    smallStep: 10,
-    largeStep: 60,
-    tickPlacement: "both"
+  $('#slider-ry').kendoSlider({
+    change: rySliderOnChange,
+    slide: rySliderOnSlide,
+    min: -360,
+    max: 360,
+    smallStep: 45,
+    largeStep: 90,
+    value: 0
+  });
+
+  $('#slider-rz').kendoSlider({
+    change: rzSliderOnChange,
+    slide: rzSliderOnSlide,
+    min: -360,
+    max: 360,
+    smallStep: 45,
+    largeStep: 90,
+    value: 0
   });
 
   $('#slider-tx').kendoSlider({
@@ -321,7 +328,17 @@ function initVertexBuffers(gl, surface){
   gl.enableVertexAttribArray(a_Position);
 
   var modelMatrix = new Matrix4();
-  modelMatrix.setRotate(angle, rotAxis[0], rotAxis[1], rotAxis[2]);
+  modelMatrix.setRotate(surface.xRotation, 1, 0, 0);
+
+  var yRotationMatrix = new Matrix4();
+  yRotationMatrix.setRotate(surface.yRotation, 0, 1, 0);
+  modelMatrix.multiply(yRotationMatrix);
+
+  var zRotationMatrix = new Matrix4();
+  zRotationMatrix.setRotate(surface.zRotation, 0, 0, 1);
+  modelMatrix.multiply(zRotationMatrix);
+
+  
 
   var translationMatrix = new Matrix4();
   translationMatrix.setTranslate(surface.xTranslation, surface.yTranslation, surface.zTranslation);
@@ -381,7 +398,7 @@ var colorB = 1
 
 var colorpicker = document.getElementById("colorpicker");
 
-colorpicker.addEventListener("change", function() {
+colorpicker.addEventListener("change", function() { // change hexadecimal to rgb 
   var colorHex = colorpicker.value;
   colorR = parseInt(colorHex.substring(1, 3), 16) / 255;
   colorG = parseInt(colorHex.substring(3, 5), 16) / 255;
