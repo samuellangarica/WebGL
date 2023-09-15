@@ -19,9 +19,12 @@
         </canvas>
         <div id="color-picker">
           <p id="current-selection">Current Selection</p>
-          <input type="color" id="colorpicker">
+          <input type="color" id="colorpicker" value="#FFFFFF">
           <button id="apply-color">
             <p>Apply color to selection</p>
+          </button>
+          <button id="remove-selection">
+            <p>Remove selection</p>
           </button>
         </div>
         
@@ -32,23 +35,6 @@
           <tr>
 
             <td>
-              <ul id="fieldlist2"> <p>Rotation Axis</p>
-                <li>
-                  <input type="radio" name="axis" id="x-axis" class="k-radio" checked="checked" onclick="changeAxis()">
-                  <label class="k-radio-label" for="x-axis">X-axis</label>
-                </li>
-                <li>
-                  <input type="radio" name="axis" id="y-axis" class="k-radio" onclick="changeAxis()">
-                  <label class="k-radio-label" for="y-axis">Y-axis</label>
-                </li>
-                <li>
-                  <input type="radio" name="axis" id="z-axis" class="k-radio" onclick="changeAxis()">
-                  <label class="k-radio-label" for="z-axis">Z-axis</label>
-                </li>
-              </ul>
-            </td>
-
-            <td>
               <button id="restart" class="k-primary" onclick="restart()">Restart</button>
             </td>
           </tr>
@@ -56,45 +42,45 @@
         <ul id="fieldlist">
           <li>
             <label>X-Rotation</label>
-            <input style="width: 80%;" id="slider-rx"/>
+            <input style="width: 80%; background-color: rgb(0, 1, 65);border-radius: 15%;" id="slider-rx"/>
           </li>
           <li>
             <label>Y-Rotation</label>
-            <input style="width: 80%;" id="slider-ry"/>
+            <input style="width: 80%; background-color: rgb(0, 1, 65);border-radius: 15%;" id="slider-ry"/>
           </li>
           <li>
             <label>Z-Rotation</label>
-            <input style="width: 80%;" id="slider-rz"/>
+            <input style="width: 80%; background-color: rgb(0, 1, 65);border-radius: 15%;" id="slider-rz"/>
           </li>
 
           <li>
             <label>X-Translation</label>
-            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-tx"/>
+            <input style="width: 80%; background-color: rgb(121, 0, 0);border-radius: 15%;" id="slider-tx"/>
           </li>
 
           <li>
             <label>Y-Translation</label>
-            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-ty"/>
+            <input style="width: 80%; background-color: rgb(121, 0, 0); border-radius: 15%;" id="slider-ty"/>
           </li>
 
           <li>
             <label>Z-Translation</label>
-            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-tz"/>
+            <input style="width: 80%; background-color: rgb(121, 0, 0);border-radius: 15%;" id="slider-tz"/>
           </li>
 
           <li>
             <label>X-Scale</label>
-            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-sx"/>
+            <input style="width: 80%; background-color: rgb(12, 71, 0);border-radius: 15%;" id="slider-sx"/>
           </li>
 
           <li>
             <label>Y-Scale</label>
-            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-sy"/>
+            <input style="width: 80%; background-color: rgb(12, 71, 0);border-radius: 15%;" id="slider-sy"/>
           </li>
 
           <li>
             <label>Z-Scale</label>
-            <input style="width: 80%; background-color: rgb(139, 133, 133);" id="slider-sz"/>
+            <input style="width: 80%; background-color: rgb(12, 71, 0);border-radius: 15%;" id="slider-sz"/>
           </li>
 
           <li>
@@ -129,9 +115,10 @@
 
     #surface-selector {
       display: flex;
-      background-color: rgb(179, 154, 102);
+      background-color: rgb(70, 41, 97);
       width: auto;
       height: 30px;
+      border-radius: 15%;
     }
 
     #fieldlist > li {
@@ -158,13 +145,20 @@
       padding-bottom: 1em;
     }
     #color-picker{
-      background-color: rgb(218, 211, 206);
+      background-color: rgb(66, 66, 66);
       text-align: center;
     }
     #apply-color{
       background-color: rgb(207, 140, 93);
       width: auto;
       height: 25px;
+    }
+    #remove-selection{
+      background-color: rgb(204, 204, 96);
+      border: solid rgb(133, 10, 10);
+    }
+    body {
+      background-color: rgb(127, 141, 150);
     }
   </style>
 

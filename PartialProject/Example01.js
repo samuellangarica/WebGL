@@ -39,6 +39,7 @@ function changeAxis() {
 
 function restart(){
   index = 0;
+  surfaces = [];
   g_points = [];
   g_colors = [];
   kendoConsole.log("Restart.");
@@ -284,7 +285,7 @@ function create_surface_selection_button(idx){
   button.style.width = 20;
   button.style.height = 20;
   button.style.margin = 10;
-  button.style.backgroundColor = 'red';
+  button.style.backgroundColor = colorpicker.value;
   button.style.color = 'white';
   button.innerHTML = 'Surf: ' + idx;
   button.onclick = function() {
@@ -297,6 +298,7 @@ function create_surface_selection_button(idx){
 }
 
 function rightclick(ev, gl){ // create surface
+
   create_surface_selection_button(index);
   surfaces.push(new Surface(g_points[index], g_colors[index]));
 
@@ -416,6 +418,12 @@ applyColorBtn.onclick = function() {
   surfaces[selection].colors = new Float32Array(newColors);
   main();
 };
+
+var removeBtn = document.getElementById("remove-selection");
+removeBtn.onclick = function() {
+  surfaces.splice(selection, 1);
+  main();
+}
 
 
 function click(ev, gl, canvas){
